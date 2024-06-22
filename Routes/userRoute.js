@@ -40,12 +40,45 @@ userRouter.get("/userlist", async (req, res) => {
     try{
         await userModel.findOneAndDelete({email: email})
         res.status(200).send("user deleted successfully");
+    }
+    catch (err) {
+      console.log(err.message);
+      res.send(err.message)
+    }
+  });
 
+userRouter.post('/login',async(req,res) => {
+    const email = req.body.email;
+    try{
+        const user = await userModel.findOne({email: req.body.email})
+        console.log(user);
+        if(!user){
+            throw new Error('user not exist');
+        }
+        console.log("user logged in ");
+        res.status(201).send("login succesfull");
+    }
+    catch(err){
+        console.log(err.message);
+        res.status(400).send(err.message);
+    }
+})
+
+userRouter.put('/update', async(req, res) => {
+    const {email , mobileNumber} = req.body
+    try{ 
+      const updated_user =   await userModel.findOneAndUpdate({email : email}, {mobileNumber: mobileNumber},{new : true})
+      if(!updated_user){
+        throw new Error('user is not updated')
+      }
+      res.status(200).send('user updated successfully')
     }
     catch(err){
         res.send(err.message)
     }
 
   })
+
+
 
 export { userRouter };
