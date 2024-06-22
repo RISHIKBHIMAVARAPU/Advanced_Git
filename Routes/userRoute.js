@@ -41,5 +41,20 @@ userRouter.post('/login',async(req,res) => {
     }
 })
 
+userRouter.put('/update', async(req, res) => {
+    const {email , mobileNumber} = req.body
+    try{ 
+      const updated_user =   await userModel.findOneAndUpdate({email : email}, {mobileNumber: mobileNumber},{new : true})
+      if(!updated_user){
+        throw new Error('user is not updated')
+      }
+      res.status(200).send('user updated successfully')
+    }
+    catch(err){
+        res.send(err.message)
+    }
+
+})
+
 
 export { userRouter };
