@@ -35,5 +35,17 @@ userRouter.get("/userlist", async (req, res) => {
     }
   });
 
+  userRouter.delete('/remove',async (req,res)=>{
+    const email = req.body.email;
+    try{
+        await userModel.findOneAndDelete({email: email})
+        res.status(200).send("user deleted successfully");
+
+    }
+    catch(err){
+        res.send(err.message)
+    }
+
+  })
 
 export { userRouter };
