@@ -24,4 +24,16 @@ userRouter.post("/register", async (req, res) => {
   }
 });
 
+
+userRouter.get("/userlist", async (req, res) => {
+    try {
+      const users = await userModel.find();
+      res.status(200).json(users);
+    } catch (err) {
+      console.log(err.message);
+      res.send(err.message)
+    }
+  });
+
+
 export { userRouter };
